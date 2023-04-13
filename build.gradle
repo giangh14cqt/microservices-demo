@@ -1,54 +1,43 @@
 plugins {
-    id 'org.springframework.boot' version '2.7.5'
-    id 'io.spring.dependency-management' version '1.0.15.RELEASE'
-    id 'java'
-    id("com.github.nbaztec.coveralls-jacoco") version "1.2.15"
-    id "jacoco"
+	id 'java'
+	id 'org.springframework.boot' version '3.0.5'
+	id 'io.spring.dependency-management' version '1.1.0'
+    id 'org.jetbrains.kotlin.jvm' version '1.8.20'
 }
 
 group = 'com.pw'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '17'
 
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
 repositories {
-    mavenCentral()
-    jcenter()
+	mavenCentral()
 }
 
 dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-    implementation 'org.springframework.boot:spring-boot-starter-security'
-    implementation 'org.springframework.boot:spring-boot-starter-web'
-    implementation 'org.springframework.boot:spring-boot-starter-test'
-    implementation 'org.springframework.boot:spring-boot-dependencies:3.0.4'
-    implementation 'org.json:json:20230227'
-    implementation 'org.modelmapper:modelmapper:3.1.1'
-
-    runtimeOnly 'com.mysql:mysql-connector-j'
-
-    compileOnly 'org.projectlombok:lombok:1.18.26'
-
-    annotationProcessor 'org.projectlombok:lombok:1.18.26'
-}
-
-jacoco {
-    reportsDirectory = file("$buildDir/reports/jacoco")
-}
-
-jacocoTestReport {
-    reports {
-        xml.required = true // coveralls plugin depends on xml format report
-        html.required = true
-    }
+//	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	compileOnly 'org.projectlombok:lombok'
+	annotationProcessor 'org.projectlombok:lombok'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
 }
 
 tasks.named('test') {
-    useJUnitPlatform()
-    jacoco {
-        destinationFile = file("$buildDir/jacoco/test.exec")
+	useJUnitPlatform()
+}
+compileKotlin {
+    kotlinOptions {
+        jvmTarget = "1.8"
     }
 }
-
-jar {
-    enabled = false
+compileTestKotlin {
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
 }
